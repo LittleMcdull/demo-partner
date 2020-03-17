@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: demo-mq
+  profiles:
+    active: ${profile:dev}
+
+server:
+  port: ${port:8081}
+  context-path: /demo-mq
+
+mybatis:
+  mapper-locations: /mapper/*.xml
+  configuration:
+    cacheEnabled: false
+    # 一定要设置，避免个别SQL执行时间过长，把系统搞跨
+    default-statement-timeout: 5
+    # vfsImpl: org.mybatis.spring.boot.autoconfigure.SpringBootVFS
+    # defaultExecutorType: batch
+
+logging:
+  level: info
+  config: classpath:logback-spring.xml

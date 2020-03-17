@@ -1,0 +1,11 @@
+dependencies {
+    //注册中心服务端的组件
+    compile 'org.springframework.cloud:spring-cloud-starter-eureka-server'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+}
+dependencyManagement {
+    imports {
+        //加上此配置后，如果需要引用springcloud的组件，就不需要再提供版本信息
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}

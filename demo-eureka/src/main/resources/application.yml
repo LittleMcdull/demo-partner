@@ -1,0 +1,20 @@
+server:
+  port: 9090
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 39.108.236.167
+  client:
+    #由于该应用为注册中心,所以设置为false,代表不向注册中心注册自己
+    registerWithEureka: false
+    #由于注册中心的职责就是维护服务实例,它并不需要去检索服务,所以也设置为false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.ip-address}:${server.port}/eureka/
+# 安全认证的配置
+security:
+  basic:
+    enabled: true
+  user:
+    name: admin  # 用户名
+    password: root123   # 用户密码

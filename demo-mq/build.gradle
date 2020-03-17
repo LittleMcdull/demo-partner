@@ -1,0 +1,9 @@
+dependencies {
+    compile project(":demo-api")
+    compile project(":demo-core")
+    compile project(":demo-conf")
+    /**读取bootStrop.yml文件*/
+    compile "org.springframework.cloud:spring-cloud-context:1.1.0.RELEASE"
+    
+    compile "com.alibaba:fastjson:1.2.60"
+}

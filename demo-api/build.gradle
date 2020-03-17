@@ -1,0 +1,8 @@
+dependencies {
+
+    compile project(":demo-core")
+
+    compile "com.alibaba:fastjson:1.2.60"
+
+    compile "org.springframework.boot:spring-boot-starter-web"
+}

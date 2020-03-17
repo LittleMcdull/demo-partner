@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: demo-management
+  profiles:
+    active: ${profile:dev}
+
+server:
+  port: ${port:8090}
+  context-path: /demo/management
+
+mybatis:
+  mapper-locations: /mapper/*.xml
+  configuration:
+    cacheEnabled: false
+    # 一定要设置，避免个别SQL执行时间过长，把系统搞跨
+    default-statement-timeout: 5
+    # vfsImpl: org.mybatis.spring.boot.autoconfigure.SpringBootVFS
+    # defaultExecutorType: batch
+
+security:
+  basic:
+    enabled: true
+    path: /swagger-ui.html
+  user:
+    name: admin
+    password: admin
+
+suixingpay:
+  swagger:
+    title: demo-management
+    description: 测试项目management
+    contact:
+      name: demo-manage
+      url: http://www.springcloud.cn/
+      email: zhouchen_9723@163.com
+    base-package: com.suixingpay.management
+    base-path: /**
+    exclude-path: /error, /ops/**
+
+logging:
+  level: info
+  config: classpath:logback-spring.xml

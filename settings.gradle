@@ -1,0 +1,10 @@
+rootProject.name = 'demo-partner'
+rootProject.name = 'demo-partner'
+include 'demo-eureka'
+include 'demo-management'
+include 'demo-core'
+include 'demo-mq'
+include 'demo-api'
+include 'demo-conf'
+include 'demo-model'
+

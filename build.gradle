@@ -1,0 +1,59 @@
+loadConfiguration()
+
+def loadConfiguration() {
+    def environment = hasProperty('env') ? env : 'test'
+    ext.set("environment", environment)
+}
+
+buildscript {
+    ext {
+        springBootVersion = '1.5.9.RELEASE'
+        springCloudVersion = 'Edgware.RELEASE'
+        REPOSITORY_URL = 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+    repositories {
+        //内网地址
+        maven {
+            url REPOSITORY_URL
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+    repositories {
+        //内网地址
+        maven {
+            url "http://maven.aliyun.com/nexus/content/groups/public/"
+        }
+        //Spring repo
+        maven { url "http://repo.spring.io/snapshot" }
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url "http://repo.spring.io/release" }
+        maven { url 'http://repo.spring.io/plugins-snapshot' }
+    }
+}
+
+subprojects {
+    
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+
+    group 'com.suixingpay.demo'
+    version '1.0-SNAPSHOT'
+    description 'demo测试'
+    sourceCompatibility = 1.8
+
+    dependencies {
+        //使用undertow作为应用服务,作为servlet容器
+        compile 'org.springframework.boot:spring-boot-starter-undertow'
+        //使用健康检查组件
+        compile 'org.springframework.boot:spring-boot-starter-actuator'
+        testCompile 'org.springframework.boot:spring-boot-starter-test'
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        compile('org.projectlombok:lombok')
+    }
+}

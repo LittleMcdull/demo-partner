@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.suixingpay.core.mapper.CommentInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.suixingpay.core.domain.CommentInfo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="news_id" property="newsId" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="comment_id" property="commentId" jdbcType="VARCHAR" />
+    <association property="userName" column="user_id" select = "com.suixingpay.core.mapper.UserMapper.selectUserName"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, user_id, news_id, comment, create_date, comment_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from comment_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from comment_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.suixingpay.core.domain.CommentInfo" >
+    insert into comment_info (ID, user_id, news_id,
+      comment, create_date, comment_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{newsId,jdbcType=VARCHAR}, 
+      #{comment,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{commentId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.suixingpay.core.domain.CommentInfo" >
+    insert into comment_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="newsId != null" >
+        news_id,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="commentId != null" >
+        comment_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="newsId != null" >
+        #{newsId,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentId != null" >
+        #{commentId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suixingpay.core.domain.CommentInfo" >
+    update comment_info
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="newsId != null" >
+        news_id = #{newsId,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentId != null" >
+        comment_id = #{commentId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suixingpay.core.domain.CommentInfo" >
+    update comment_info
+    set user_id = #{userId,jdbcType=VARCHAR},
+      news_id = #{newsId,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      comment_id = #{commentId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByNewsId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from comment_info
+    where news_id = #{newsId,jdbcType=VARCHAR} order by create_date
+  </select>
+</mapper>
