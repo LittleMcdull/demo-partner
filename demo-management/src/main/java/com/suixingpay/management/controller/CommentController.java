@@ -9,7 +9,7 @@
 package com.suixingpay.management.controller;
 
 import com.suixingpay.core.domain.CommentInfo;
-import com.suixingpay.core.domain.response.ResponseBean;
+import com.suixingpay.core.bean.ResponseMessage;
 import com.suixingpay.management.service.CommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,17 +35,17 @@ public class CommentController {
 
     @GetMapping("/list/{newsId}")
     @ApiOperation(value = "评论管理中心", notes = "评论管理中心")
-    public ResponseBean list(@PathVariable("newsId") String newsId){
-        return ResponseBean.ok(commentService.selectComment(newsId));
+    public ResponseMessage list(@PathVariable("newsId") String newsId){
+        return ResponseMessage.ok(commentService.selectComment(newsId));
     }
 
     @PostMapping("/insert")
     @ApiOperation(value = "新增评论信息", notes = "新增评论信息")
-    public ResponseBean comment(@RequestBody CommentInfo commentInfo){
+    public ResponseMessage comment(@RequestBody CommentInfo commentInfo){
         if (commentService.insetComment(commentInfo)) {
-            return ResponseBean.ok("评论成功");
+            return ResponseMessage.ok("评论成功");
         }
 
-        return ResponseBean.error("评论失败");
+        return ResponseMessage.error("评论失败");
     }
 }

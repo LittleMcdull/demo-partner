@@ -8,8 +8,8 @@
  */
 package com.suixingpay.management.controller;
 
+import com.suixingpay.core.bean.ResponseMessage;
 import com.suixingpay.core.domain.Phone;
-import com.suixingpay.core.domain.response.ResponseBean;
 import com.suixingpay.management.service.PhoneService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,9 +35,9 @@ public class PhoneController {
 
     @GetMapping("/list")
     @ApiOperation(value = "手机管理界面列表", notes = "手机管理界面列表")
-    public ResponseBean list(Phone phone){
+    public ResponseMessage list(Phone phone){
 
-        return ResponseBean.list(phoneService.selectCount(phone),
+        return ResponseMessage.list(phoneService.selectCount(phone),
                 phoneService.selectPhones(phone));
     }
 }

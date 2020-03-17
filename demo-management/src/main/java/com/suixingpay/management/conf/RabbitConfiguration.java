@@ -13,7 +13,7 @@ import com.suixingpay.conf.rabbitmq.consumer.SimpleMessageConsumer;
 import com.suixingpay.management.consumer.UserConsumerService;
 import com.suixingpay.management.consumer.handler.UserHandler;
 import com.suixingpay.management.destination.DestinationEnum;
-import com.suixingpay.management.properties.RabbitMqProperties;
+import com.suixingpay.core.properties.RabbitMqProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;

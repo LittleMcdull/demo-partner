@@ -23,11 +23,7 @@ public class Content {
 
     public static String RSA = "RSA";
 
-    public static String version = "1.0";
-    /** 蜻蜓版本号*/
-    public static String version3 = "3.0";
-    /** 越客蜻蜓版本号*/
-    public static String version4 = "4.0";
+    public static String VERSION = "1.0";
 
     public static final String PARAM = "tradenum";
 
@@ -39,22 +35,16 @@ public class Content {
 
     public static final String NOTIFY_CODE_SUCCESS = "0000";
 
-    public static final String NOTIFY_CODE_SUCCESS_STRING = "success";
-    public static int NOTIFY_NUMBER_MAX = 2;
+    public static final String SUCCESS = "SUCCESS";
 
     public static String TOKEN_IS_NOT_NULL = "token不能为空";
 
-    public static String TOKEN_NO_PARTNER_CORRESPONDENCE = "没有企业对应此token";
-
-    public static String NO_QUERY_THE_ORDER = "没有查询到该笔订单";
-
-    public static String NO_MISMATCH_AS_TOKEN = "企业与token不匹配";
-
-    public static String ACCOUNT_FILE_NOT_FOUND = "对应对账文件不存在";
-
     public static String XLS_FILE_SUFFIX = ".xls";
+
     public static String XLSX_FILE_SUFFIX = ".xlsx";
+
     public static String CSV_FILE_SUFFIX = ".csv";
+
     public static String PDF_FILE_SUFFIX = ".pdf";
 
     public static String RICHTEXT_FLODER_NAME = "RichText";
@@ -109,21 +99,9 @@ public class Content {
 
     public static final String SETRAM = "settlenum";
 
-    public static final String SYSID = "ICM";
-
-    public static final String PRODNO = "800";
-
-    public static final String orgIdKey = "icm:orgid:";
-
-    public static final String orgIdKeyMq = "icm:mq:orgid:";
-    public static final String orgIdKeyCallback = "api-order-callback:mq:orgid:";
-
     public static final int BATCH_SIZE=1000;
 
-    public  static  final  String HSHTN="HSTN0001";
-    public  static  final  String HSHD1="HSD10001";
     public  static  final  String FAIL="FAIL";
-    public  static  final  String HSH0305="0305";
 
     public static String print() {
         StringBuffer sb = new StringBuffer();

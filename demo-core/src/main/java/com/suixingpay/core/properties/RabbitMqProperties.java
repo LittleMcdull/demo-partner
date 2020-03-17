@@ -6,7 +6,7 @@
  * @Copyright: ©2018 Suixingpay. All rights reserved.
  * 注意：本内容仅限于随行付支付有限公司内部传阅，禁止外泄以及用于其他的商业用途。
  */
-package com.suixingpay.management.properties;
+package com.suixingpay.core.properties;
 
 import lombok.Data;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;

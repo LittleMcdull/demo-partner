@@ -82,7 +82,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public int updateNews(News news) {
+
         news.setViews(news.getViews() + 1);
+        news.setUpdateDate(new Date());
         return newsMapper.updateByPrimaryKeySelective(news);
     }
 }

@@ -8,13 +8,17 @@
  */
 package com.suixingpay.management.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.suixingpay.api.domain.request.RequestRpc;
 import com.suixingpay.api.domain.response.ResponseRpc;
+import com.suixingpay.core.advice.KeyProperties;
 import com.suixingpay.core.domain.CommentInfo;
 import com.suixingpay.core.domain.News;
 import com.suixingpay.core.mapper.CommentInfoMapper;
 import com.suixingpay.core.mapper.NewsMapper;
 import com.suixingpay.core.utils.UuidUtil;
+import com.suixingpay.core.utils.sign.RSASignature;
+import com.suixingpay.management.constants.BeanConvert;
 import com.suixingpay.management.feignclient.NewsApiFeignClient;
 import com.suixingpay.management.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +38,9 @@ import java.util.List;
 @Service
 @Slf4j
 public class CommentServiceImpl implements CommentService {
+
+    @Autowired
+    private KeyProperties keyProperties;
 
     @Autowired
     private CommentInfoMapper commentInfoMapper;
@@ -56,9 +63,19 @@ public class CommentServiceImpl implements CommentService {
         int result = commentInfoMapper.insertSelective(commentInfo);
         if (result > 0) {
             log.info("|评论成功|修改阅读次数 +1 ｜新闻ID[{}]", commentInfo.getNewsId());
-            RequestRpc<News> requestRpc = new RequestRpc<>();
+            RequestRpc<News> requestRpc = BeanConvert.buildRequest();
             News news = newsMapper.selectByPrimaryKey(commentInfo.getNewsId());
-            requestRpc.setReqData(news);
+
+            News reqNews = new News();
+            reqNews.setId(news.getId());
+            reqNews.setViews(news.getViews());
+            requestRpc.setReqData(reqNews);
+
+            // 签名
+            String reqStr = JSONObject.toJSONString(requestRpc);
+            requestRpc.setSign(RSASignature.signStr(reqStr, keyProperties.getPrivateKey()));
+
+            log.info("|评论成功|修改阅读次数|请求Cloud接口, 请求参数[{}]", JSONObject.toJSONString(requestRpc));
             ResponseRpc<String> responseRpc = newsApiFeignclient.updateNewsReader(requestRpc);
 
             if (StringUtils.equals(responseRpc.getCode(), "200")) {

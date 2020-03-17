@@ -8,7 +8,6 @@
  */
 package com.suixingpay.management.feignclient;
 
-import com.suixingpay.api.controller.NewsApi;
 import com.suixingpay.api.domain.request.RequestRpc;
 import com.suixingpay.api.domain.response.ResponseRpc;
 import com.suixingpay.core.domain.News;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * @author: 周晨<zhou_chen1 @ suixingpay.com>
+ * @author: 周晨<zhou_chen1@suixingpay.com>
  * @date: 2020/3/16 2:55 PM
  */
 @FeignClient(value = "demo-management", path = "/demo/management/newsApi")

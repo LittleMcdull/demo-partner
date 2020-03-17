@@ -9,7 +9,7 @@
 package com.suixingpay.core.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.suixingpay.core.domain.response.ResponseBean;
+import com.suixingpay.core.bean.response.ResponseBean;
 import com.suixingpay.core.enums.CommonExceptionEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

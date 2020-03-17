@@ -10,7 +10,7 @@ package com.suixingpay.management.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.suixingpay.core.domain.User;
-import com.suixingpay.core.domain.response.ResponseBean;
+import com.suixingpay.core.bean.ResponseMessage;
 import com.suixingpay.management.service.IndexService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,41 +39,41 @@ public class IndexController {
 
     @GetMapping("/login")
     @ApiOperation(value = "登陆首页", notes = "登陆首页")
-    public ResponseBean login(@RequestBody User user){
+    public ResponseMessage login(@RequestBody User user){
 
         log.info("|用户登录开始|登录请求参数|[{}]", JSONObject.toJSONString(user));
 
         User loginUser = indexService.selectUser(user.getUserName(), user.getPassword());
         if (null == loginUser){
-            return ResponseBean.error("用户名或密码不正确.");
+            return ResponseMessage.error("用户名或密码不正确.");
         }
 
-        return ResponseBean.ok("验证登录成功.");
+        return ResponseMessage.ok("验证登录成功.");
     }
 
     @PostMapping("/register")
     @ApiOperation(value = "注册用户", notes = "注册用户")
-    public ResponseBean register(@RequestBody User user){
+    public ResponseMessage register(@RequestBody User user){
 
         log.info("|用户注册开始|登录注册参数|[{}]", JSONObject.toJSONString(user));
 
         if (!indexService.insertUser(user)){
-            return ResponseBean.error("用户注册失败.");
+            return ResponseMessage.error("用户注册失败.");
         }
 
-        return ResponseBean.ok("用户注册成功.");
+        return ResponseMessage.ok("用户注册成功.");
     }
 
     @GetMapping("/img")
     @ApiOperation(value = "首页轮播图", notes = "首页轮播图")
-    public ResponseBean img(){
+    public ResponseMessage img(){
 
         List<String> imgList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             String path = "http://39.108.236.167:8080/demo-management/images/"+i+".jpg";
             imgList.add(path);
         }
-        return ResponseBean.ok(imgList);
+        return ResponseMessage.ok(imgList);
     }
 }
 

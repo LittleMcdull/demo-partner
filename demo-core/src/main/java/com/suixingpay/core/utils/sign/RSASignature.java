@@ -6,8 +6,10 @@
  * @Copyright: ©2019 Suixingpay. All rights reserved.
  * 注意：本内容仅限于随行付支付有限公司内部传阅，禁止外泄以及用于其他的商业用途。
  */
-package com.suixingpay.core.utils;
+package com.suixingpay.core.utils.sign;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.parser.Feature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import sun.misc.BASE64Decoder;
@@ -20,6 +22,8 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -39,6 +43,18 @@ public class RSASignature {
     public static final String SIGN_ALGORITHMS = "SHA1WithRSA";
 
     public static final String UTF8 = "UTF-8";
+
+
+    public static String signStr(String reqStr, String privateKey) {
+
+        HashMap<String, Object> reqMap=  JSON.parseObject(reqStr,LinkedHashMap.class,Feature.OrderedField);
+        String signContent = RSASignature.getOrderContent(reqMap);
+        log.info("待加签字符串:{}", signContent);
+        String sign = RSASignature.sign(signContent, privateKey, UTF8);
+        log.info("加签后签名: {}", sign);
+
+        return sign;
+    }
 
     /**
      * 针对参数进行排序拼装

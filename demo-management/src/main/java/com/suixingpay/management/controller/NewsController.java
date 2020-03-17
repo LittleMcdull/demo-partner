@@ -9,7 +9,7 @@
 package com.suixingpay.management.controller;
 
 import com.suixingpay.core.domain.News;
-import com.suixingpay.core.domain.response.ResponseBean;
+import com.suixingpay.core.bean.ResponseMessage;
 import com.suixingpay.management.service.NewsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,24 +31,24 @@ public class NewsController {
     private NewsService newsService;
 
     @GetMapping("/list")
-    public ResponseBean list(){
+    public ResponseMessage list(){
 
-        return ResponseBean.list(newsService.selectNewsTotal(),
+        return ResponseMessage.list(newsService.selectNewsTotal(),
                 newsService.selectNewsList());
     }
 
     @GetMapping("/info/{infoId}")
-    public ResponseBean info(@PathVariable("infoId") String infoId){
-        return ResponseBean.ok(newsService.selectNewsInfo(infoId));
+    public ResponseMessage info(@PathVariable("infoId") String infoId){
+        return ResponseMessage.ok(newsService.selectNewsInfo(infoId));
     }
 
     @PostMapping("/add")
-    public ResponseBean add(@RequestBody News news){
+    public ResponseMessage add(@RequestBody News news){
         if (newsService.insertNews(news)) {
-            return ResponseBean.ok("添加新闻成功");
+            return ResponseMessage.ok("添加新闻成功");
         }
 
-        return ResponseBean.error("添加新闻失败");
+        return ResponseMessage.error("添加新闻失败");
     }
 
 

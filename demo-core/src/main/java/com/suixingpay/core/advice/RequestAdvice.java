@@ -13,12 +13,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.Feature;
 import com.suixingpay.core.annotations.ApiSecurity;
 import com.suixingpay.core.bean.Content;
+import com.suixingpay.core.bean.response.ResponseBean;
 import com.suixingpay.core.enums.ApiSecurityException;
 import com.suixingpay.core.enums.CommonExceptionEnum;
-import com.suixingpay.core.utils.RSASignature;
+import com.suixingpay.core.utils.sign.RSASignature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +29,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 
 import java.io.IOException;
@@ -40,11 +44,11 @@ import java.util.LinkedHashMap;
  * @date: 2020/3/16 6:30 PM
  */
 @Slf4j
-@ControllerAdvice(annotations = ApiSecurity.class)
+@ControllerAdvice(basePackages = "com.suixingpay.management.api")
 public class RequestAdvice implements RequestBodyAdvice {
 
-    @Value("suixingpay.key.publicKey")
-    String publicKey;
+    @Autowired
+    private KeyProperties keyProperties;
 
     @Override
     public boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
@@ -98,7 +102,7 @@ public class RequestAdvice implements RequestBodyAdvice {
             String data = IOUtils.toString(inputMessage.getBody(), Content.ENCODING_UTF_8);
             log.info("验签前参数：{}",data);
             //TODO 接口权限拦截
-            HashMap<String, Object> objMap=  JSON.parseObject(data,LinkedHashMap.class, Feature.OrderedField);
+            HashMap<String, Object> objMap=  JSONObject.parseObject(data,LinkedHashMap.class, Feature.OrderedField);
             Object reqIdObj = objMap.get("reqId");
             if(StringUtils.isEmpty(reqIdObj)){
                 throw new ApiSecurityException(CommonExceptionEnum.VALIDATE_EXCEPTION,null);
@@ -123,7 +127,7 @@ public class RequestAdvice implements RequestBodyAdvice {
                 throw new ApiSecurityException(CommonExceptionEnum.VALIDATE_EXCEPTION,reqId);
             }
 
-            if (!org.apache.commons.lang3.StringUtils.equalsAny(version.toString(), "1.0", "2.0",Content.version3, Content.version4)) {
+            if (!org.apache.commons.lang3.StringUtils.equalsAny(version.toString(), Content.VERSION)) {
                 throw new ApiSecurityException(CommonExceptionEnum.VALIDATE_EXCEPTION,reqId);
             }
 
@@ -141,8 +145,9 @@ public class RequestAdvice implements RequestBodyAdvice {
             //TODO 从机构信息获取
             objMap.remove("sign");
             String content = RSASignature.getOrderContent(objMap);
+            log.info("验签字符串[{}]", content);
             //TODO 解签( rsa签名，并与上送的 sign 比对)
-            boolean verify = RSASignature.doCheck(content, reqSign.toString(), publicKey);
+            boolean verify = RSASignature.doCheck(content, reqSign.toString(), keyProperties.getPublicKey());
             log.debug("验签结果：{}",verify);
             if (!verify) {
                 //TODO 如果失败从库里读取防止没有刷新缓存
@@ -166,5 +171,14 @@ public class RequestAdvice implements RequestBodyAdvice {
         public HttpHeaders getHeaders() {
             return headers;
         }
+    }
+
+    @ResponseBody
+    @ApiSecurity
+    @ExceptionHandler(ApiSecurityException.class)
+    public ResponseBean<Object> handleException(ApiSecurityException e) {
+        // 记录错误信息
+        log.error(e.getMessage());
+        return new ResponseBean<>(e.getCode(),e.getMessage(),e.getReqId());
     }
 }

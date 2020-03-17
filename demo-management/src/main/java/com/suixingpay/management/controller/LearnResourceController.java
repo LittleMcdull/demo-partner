@@ -2,7 +2,7 @@ package com.suixingpay.management.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.suixingpay.core.domain.LearnResouce;
-import com.suixingpay.core.domain.response.ResponseBean;
+import com.suixingpay.core.bean.ResponseMessage;
 import com.suixingpay.management.service.LearnResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,9 +27,9 @@ public class LearnResourceController {
     private LearnResourceService learnResourceService;
 
     @GetMapping("/book")
-    public ResponseBean index() {
+    public ResponseMessage index() {
         JSONObject result = new JSONObject();
         List<LearnResouce> learnList = learnResourceService.getAll();
-        return ResponseBean.ok(learnList);
+        return ResponseMessage.ok(learnList);
     }
 }
